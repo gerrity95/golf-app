@@ -73,12 +73,32 @@ def log_error(e):
 
 def main():
 
-    raw_html = simple_get('http://localhost/filmforecast/index.php')
+    url = 'https://brsgolf.com/opencomps/search/search?country_id=1&county_id=12&type_of_competition=Gents&startdate=17-Jan-2019&enddate=18-Jan-2019&type_of_course='
+    raw_html = simple_get(url)
     no_html = simple_get('https://realpython.com/blog/nope-not-gonna-find-it')
 
     print(len(raw_html))
+    print("URL: " + url)
+    html = BeautifulSoup(raw_html, 'html.parser')
 
-    print(process_url(raw_html))
+    div = html.find(id="results")
+
+    details = div.findAll("div", {"class": "col-xs-9"})
+
+    first = details[0]
+
+    print(first)
+
+    print(first.h3.text)
+
+    bod = first.findAll("div", {"class": "col-xs-8"})
+    for i in bod:
+        print(i.text)
+
+    link = first.find("a", {"class": "btn-book"})
+
+    print(link)
+
 
 if __name__ == '__main__':
     main()
